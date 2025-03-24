@@ -27,7 +27,7 @@ def create_table(connection):
         user_id BIGINT,
         apartment_id BIGINT,
         viewed_at DATETIME,
-        is_wishlisted BOOLEAN,
+        is_wishlisted CHAR(1),
         call_to_action VARCHAR(100),
         PRIMARY KEY (user_id, apartment_id, viewed_at)
     );
@@ -38,6 +38,9 @@ def create_table(connection):
         print("Table 'user_viewings' ready.")
 
 def insert_batch(connection, data):
+    # Convert viewed_at to string format that MySQL understands
+    data['viewed_at'] = pd.to_datetime(data['viewed_at']).dt.strftime('%Y-%m-%d %H:%M:%S')
+    
     insert_query = """
         INSERT INTO user_viewings (
             user_id, apartment_id, viewed_at, is_wishlisted, call_to_action
@@ -46,22 +49,29 @@ def insert_batch(connection, data):
             is_wishlisted=VALUES(is_wishlisted),
             call_to_action=VALUES(call_to_action);
     """
-    records = [tuple(x) for x in data.astype(object).where(pd.notnull(data), None).values]
+
+    # Convert to list of tuples with None for NaN values
+    records = list(data.replace({pd.NA: None}).itertuples(index=False, name=None))
+
     batch_size = 1000
     with connection.cursor() as cursor:
         for i in range(0, len(records), batch_size):
-            cursor.executemany(insert_query, records[i:i+batch_size])
+            batch_records = records[i:i+batch_size]
+            cursor.executemany(insert_query, batch_records)
             connection.commit()
-            print(f"Inserted {i + len(records[i:i+batch_size])} records so far...")
+            print(f"Inserted {i + len(batch_records)} records so far...")
+    print("Batch inserted successfully.")
 
 def main():
     connection = connect_to_database()
     if connection:
         try:
             create_table(connection)
-            for chunk in pd.read_csv(csv_path, chunksize=5000, parse_dates=["viewed_at"]):
+            for chunk in pd.read_csv(csv_path, chunksize=5000):
                 insert_batch(connection, chunk)
             print("All user_viewings inserted successfully.")
+        except Exception as e:
+            print(f"Error occurred: {e}")
         finally:
             connection.close()
             print("Connection closed.")
