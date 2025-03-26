@@ -4,7 +4,7 @@ import mysql.connector
 from dotenv import load_dotenv
 
 load_dotenv()
-csv_path = "../data_source/user_viewings.csv"
+csv_path = "../data_source/booking.csv"
 
 def connect_to_database():
     try:
@@ -23,28 +23,37 @@ def connect_to_database():
 
 def create_table(connection):
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS user_viewings (
+    CREATE TABLE IF NOT EXISTS bookings (
+        booking_id BIGINT PRIMARY KEY,
         user_id BIGINT,
         apartment_id BIGINT,
-        viewed_at DATE,
-        is_wishlisted BOOLEAN,
-        call_to_action VARCHAR(100),
-        PRIMARY KEY (user_id, apartment_id, viewed_at)
+        booking_date DATE,
+        checkin_date DATE,
+        checkout_date DATE,
+        total_price FLOAT,
+        currency VARCHAR(10),
+        booking_status VARCHAR(50)
     );
     """
     with connection.cursor() as cursor:
         cursor.execute(create_table_query)
         connection.commit()
-        print("Table 'user_viewings' ready.")
+        print("Table 'bookings' ready.")
 
 def insert_batch(connection, data):
     insert_query = """
-        INSERT INTO user_viewings (
-            user_id, apartment_id, viewed_at, is_wishlisted, call_to_action
-        ) VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO bookings (
+            booking_id, user_id, apartment_id, booking_date, checkin_date, checkout_date, total_price, currency, booking_status
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ON DUPLICATE KEY UPDATE
-            is_wishlisted=VALUES(is_wishlisted),
-            call_to_action=VALUES(call_to_action);
+            user_id=VALUES(user_id),
+            apartment_id=VALUES(apartment_id),
+            booking_date=VALUES(booking_date),
+            checkin_date=VALUES(checkin_date),
+            checkout_date=VALUES(checkout_date),
+            total_price=VALUES(total_price),
+            currency=VALUES(currency),
+            booking_status=VALUES(booking_status);
     """
     records = [tuple(x) for x in data.astype(object).where(pd.notnull(data), None).values]
     batch_size = 1000
@@ -61,7 +70,7 @@ def main():
             create_table(connection)
             for chunk in pd.read_csv(csv_path, chunksize=5000):
                 insert_batch(connection, chunk)
-            print("All user viewings inserted successfully.")
+            print("All bookings inserted successfully.")
         finally:
             connection.close()
             print("Connection closed.")

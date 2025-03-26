@@ -4,7 +4,7 @@ import mysql.connector
 from dotenv import load_dotenv
 
 load_dotenv()
-csv_path = "../data_source/apartments.csv"
+csv_path = "../data_source/apartment.csv"
 
 def connect_to_database():
     try:
@@ -26,12 +26,12 @@ def create_table(connection):
     CREATE TABLE IF NOT EXISTS apartments (
         id BIGINT PRIMARY KEY,
         title VARCHAR(255),
-        source VARCHAR(50),
+        source VARCHAR(100),
         price FLOAT,
         currency VARCHAR(10),
-        listing_created_on DATETIME,
+        listing_created_on DATE,
         is_active BOOLEAN,
-        last_modified_timestamp DATETIME
+        last_modified_timestamp DATE
     );
     """
     with connection.cursor() as cursor:
@@ -66,7 +66,7 @@ def main():
     if connection:
         try:
             create_table(connection)
-            for chunk in pd.read_csv(csv_path, chunksize=5000, parse_dates=["listing_created_on", "last_modified_timestamp"]):
+            for chunk in pd.read_csv(csv_path, chunksize=10000):
                 insert_batch(connection, chunk)
             print("All apartments inserted successfully.")
         finally:
