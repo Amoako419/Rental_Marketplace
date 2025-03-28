@@ -1,0 +1,39 @@
+{
+    "Comment": "Step Function for Glue Jobs with SNS Notification",
+    "StartAt": "Extraction",
+    "States": {
+      "Extraction": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::glue:startJobRun",
+        "Parameters": {
+          "JobName": "Ingestion"
+        },
+        "Next": "Transformation"
+      },
+      "Transformation": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::glue:startJobRun",
+        "Parameters": {
+          "JobName": "Transform"
+        },
+        "Next": "Loading"
+      },
+      "Loading": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::glue:startJobRun",
+        "Parameters": {
+          "JobName": "Loading"
+        },
+        "Next": "Notify"
+      },
+      "Notify": {
+        "Type": "Task",
+        "Resource": "arn:aws:states:::sns:publish",
+        "Parameters": {
+          "TopicArn": "YOUR_SNS_TOPIC_ARN",
+          "Message": "KPI pipeline completed successfully."
+        },
+        "End": true
+      }
+    }
+  }
