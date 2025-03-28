@@ -156,7 +156,39 @@ ORDER BY o.month;
 - **Average Booking Duration**:  
   By tracking the average length of stays, we gain insight into customer preferences and the potential revenue per booking.
 
+### SQL Query
+The following query retrieves key performance indicators (KPIs) for weekly analysis:
 
+<p align="center">
+    <img src="images/weekly-kpis.png" alt="The weekly kpis" width="100%" />
+</p>
+
+```sql
+SELECT DISTINCT
+    a.week_start,
+    a.avg_listing_price,
+    l.cityname,
+    l.total_bookings AS popular_city_bookings,
+    u.total_bookings AS user_total_bookings
+FROM presentation.kpis.avg_listing_price_per_week a
+LEFT JOIN presentation.kpis.most_popular_locations l
+    ON a.week_start = l.week
+LEFT JOIN presentation.kpis.total_bookings_per_user u
+    ON a.week_start = u.week
+ORDER BY u.total_bookings DESC
+LIMIT 20;
+```
+
+### Explanation for the CEO (Weekly KPIs)
+
+- **Average Listing Price**:  
+  We monitor the average rental price of active listings each week. This provides insight into market pricing trends.
+
+- **Most Popular Location**:  
+  For each week, we identify the city with the highest number of bookings. This helps us target marketing and adjust inventory for high-demand areas.
+
+- **User Engagement**:  
+  We also track the total number of bookings per user each week. Higher numbers indicate increased engagement and platform stickiness.
 
 ## 🧰 Technologies Used
 - **AWS RDS MySQL**: Source database for rental marketplace data.
