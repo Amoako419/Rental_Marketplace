@@ -156,6 +156,7 @@ ORDER BY o.month;
 - **Average Booking Duration**:  
   By tracking the average length of stays, we gain insight into customer preferences and the potential revenue per booking.
 
+## 📊 Weekly KPI Analysis
 ### SQL Query
 The following query retrieves key performance indicators (KPIs) for weekly analysis:
 
