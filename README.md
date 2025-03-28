@@ -45,6 +45,7 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 <p align="center">
     <img src="images/Init_db_erd.jpg" alt="The architecture diagram" width="100%" />
 </p>
+
 ### **1️⃣ Apartments Data**
 | Column                | Type     | Description                   |
 |----------------------|---------|-----------------------------|
