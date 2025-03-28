@@ -102,7 +102,30 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 | booking_status | STRING | Booking status         |
 
 
+## 📈 KPIs Created
 
+### Rental Performance Metrics
+- **Average Listing Price**:  
+  Compute the average price of active rental listings each week.
+
+- **Occupancy Rate**:  
+  Measure the percentage of available rental nights that were booked over a month.
+
+- **Most Popular Locations**:  
+  Identify the most frequently booked cities every week.
+
+- **Top Performing Listings**:  
+  Track properties with the highest confirmed revenue per week.
+
+### User Engagement Metrics
+- **Total Bookings per User**:  
+  Count the total number of rentals booked per user every week.
+
+- **Average Booking Duration**:  
+  Compute the mean duration of confirmed stays over time.
+
+- **Repeat Customer Rate**:  
+  Measure how many users book more than once within a rolling 30-day period.
 
 
 ## 📊 Monthly KPI Analysis
@@ -111,7 +134,7 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 The following query retrieves key performance indicators (KPIs) for monthly analysis:
 
 <p align="center">
-    <img src="images/Monthly.png" alt="The architecture diagram" width="100%" />
+    <img src="images/Monthly-kpis.png" alt="The monthly kpis" width="100%" />
 </p>
 
 ```sql
@@ -136,7 +159,7 @@ ORDER BY o.month;
 
 
 ## 🧰 Technologies Used
-- **AWS Aurora MySQL**: Source database for rental marketplace data.
+- **AWS RDS MySQL**: Source database for rental marketplace data.
 - **AWS S3**: Storage for raw and processed data.
 - **AWS Redshift**: Data warehouse for analytical reporting.
 - **AWS Glue**: ETL jobs for data extraction, transformation, and loading.
