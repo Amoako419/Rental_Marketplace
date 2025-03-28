@@ -9,8 +9,27 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
     <img src="images/architecture_diagram.jpg" alt="The architecture diagram" width="100%" />
 </p>
  
+ ## 🔧 AWS Glue Python Shell Jobs
+### **1️⃣ Extract & Load Job**
+- Moves data from **RDS to S3** and **loads into Redshift Raw Layer**
 
+### **2️⃣ Transform Job**
+- Processes **S3 data** and loads into **Redshift Curated Schema**
 
+### **3️⃣ KPI Computation Job**
+- Computes **business metrics** from **S3 data** and stores in **Redshift Presentation**
+
+## 🏗️ AWS Step Functions Workflow
+1. **Start Execution**
+2. **Run Extract & Load Job**
+3. **Run Transform Job**
+4. **Run KPI Calculation Job**
+5. **Store Results in Redshift**
+6. **End Execution**
+
+<p align="center">
+    <img src="images/Init_db_erd.jpg" alt="The architecture diagram" width="100%" />
+</p>
 
 ## 📂 Datasets & Schema
 ### **1️⃣ Apartments Data**
@@ -68,6 +87,3 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 | currency     | STRING  | Payment currency        |
 | booking_status | STRING | Booking status         |
 
-<p align="center">
-    <img src="images/Init_db_erd.jpg" alt="The architecture diagram" width="100%" />
-</p>
