@@ -38,11 +38,13 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 6. **End Execution**
 
 
+
+
+## 📂 Datasets & Schema
+
 <p align="center">
     <img src="images/Init_db_erd.jpg" alt="The architecture diagram" width="100%" />
 </p>
-
-## 📂 Datasets & Schema
 ### **1️⃣ Apartments Data**
 | Column                | Type     | Description                   |
 |----------------------|---------|-----------------------------|
@@ -98,36 +100,6 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 | currency     | STRING  | Payment currency        |
 | booking_status | STRING | Booking status         |
 
-## 🛠️ Prerequisites
-- **AWS Account**: Ensure you have access to AWS services like Aurora, S3, Redshift, Glue, and Step Functions.
-- **Python**: Install Python 3.8 or later.
-- **AWS CLI**: Configure the AWS CLI with appropriate credentials.
-- **IAM Roles**: Set up IAM roles with permissions for Glue, S3, and Redshift.
-
-## 🚀 Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/rental-marketplace.git
-   cd rental-marketplace
-   ```
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Configure AWS resources:
-   - Create an Aurora MySQL database and populate it with sample data.
-   - Set up S3 buckets for raw and processed data.
-   - Create a Redshift cluster and define schemas for raw, curated, and presentation layers.
-
-4. Deploy Glue jobs:
-   - Upload the Python scripts to S3.
-   - Create Glue jobs for extraction, transformation, and KPI computation.
-
-5. Configure Step Functions:
-   - Define the workflow using the provided state machine definition.
-
-6. Run the pipeline:
-   - Trigger the Step Functions workflow to execute the pipeline.
 
 ## 🧰 Technologies Used
 - **AWS Aurora MySQL**: Source database for rental marketplace data.
@@ -137,8 +109,34 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 - **AWS Step Functions**: Orchestrates the pipeline workflow.
 - **Python**: Scripting language for Glue jobs and data processing.
 
-## 📈 Business Use Cases
-- Analyze user interactions to identify popular listings.
-- Compute KPIs such as average booking price, occupancy rates, and revenue trends.
-- Generate reports for decision-making and strategy planning.
+
+## 📊 Monthly KPI Analysis
+
+### SQL Query
+The following query retrieves key performance indicators (KPIs) for monthly analysis:
+
+```sql
+SELECT 
+    o.month,
+    o.occupancy_rate,
+    d.avg_booking_duration,
+    r.repeat_customer_rate
+FROM presentation.public.occupancy_rate_per_month o
+LEFT JOIN presentation.public.avg_booking_duration_per_month d
+    ON o.month = d.month
+LEFT JOIN presentation.public.repeat_customer_rate_per_month r
+    ON o.month = r.month
+ORDER BY o.month;
+```
+
+### Explanation for the CEO (Monthly KPIs)
+
+- **Occupancy Rate**:  
+  This metric shows the percentage of available rental nights that were booked in a month, indicating how effectively our inventory is being utilized.
+
+- **Average Booking Duration**:  
+  By tracking the average length of stays, we gain insight into customer preferences and the potential revenue per booking.
+
+- **Repeat Customer Rate**:  
+  This tells us the percentage of customers returning to book again within a month, a key indicator of customer satisfaction and loyalty.
 
