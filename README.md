@@ -102,13 +102,7 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 | booking_status | STRING | Booking status         |
 
 
-## 🧰 Technologies Used
-- **AWS Aurora MySQL**: Source database for rental marketplace data.
-- **AWS S3**: Storage for raw and processed data.
-- **AWS Redshift**: Data warehouse for analytical reporting.
-- **AWS Glue**: ETL jobs for data extraction, transformation, and loading.
-- **AWS Step Functions**: Orchestrates the pipeline workflow.
-- **Python**: Scripting language for Glue jobs and data processing.
+
 
 
 ## 📊 Monthly KPI Analysis
@@ -116,17 +110,18 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 ### SQL Query
 The following query retrieves key performance indicators (KPIs) for monthly analysis:
 
+<p align="center">
+    <img src="images/Monthly.png" alt="The architecture diagram" width="100%" />
+</p>
+
 ```sql
-SELECT 
+SELECT DISTINCT
     o.month,
     o.occupancy_rate,
-    d.avg_booking_duration,
-    r.repeat_customer_rate
-FROM presentation.public.occupancy_rate_per_month o
-LEFT JOIN presentation.public.avg_booking_duration_per_month d
+    d.avg_booking_duration
+FROM presentation.kpis.occupancy_rate_per_month o
+LEFT JOIN presentation.kpis.avg_booking_duration d
     ON o.month = d.month
-LEFT JOIN presentation.public.repeat_customer_rate_per_month r
-    ON o.month = r.month
 ORDER BY o.month;
 ```
 
@@ -138,6 +133,12 @@ ORDER BY o.month;
 - **Average Booking Duration**:  
   By tracking the average length of stays, we gain insight into customer preferences and the potential revenue per booking.
 
-- **Repeat Customer Rate**:  
-  This tells us the percentage of customers returning to book again within a month, a key indicator of customer satisfaction and loyalty.
 
+
+## 🧰 Technologies Used
+- **AWS Aurora MySQL**: Source database for rental marketplace data.
+- **AWS S3**: Storage for raw and processed data.
+- **AWS Redshift**: Data warehouse for analytical reporting.
+- **AWS Glue**: ETL jobs for data extraction, transformation, and loading.
+- **AWS Step Functions**: Orchestrates the pipeline workflow.
+- **Python**: Scripting language for Glue jobs and data processing.
