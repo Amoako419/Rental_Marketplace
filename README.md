@@ -55,8 +55,10 @@ Rental_Marketplace/
 │   ├── Init_db_erd.jpg          # Database schema ERD
 │   ├── Monthly-kpis.png         # Monthly KPI visualization
 │   └── weekly-kpis.png          # Weekly KPI visualization
-├── data/                        # Sample datasets for testing
-├── sql_queries/                 # SQL scripts for KPI computation
+├── data_sources/                        # Sample datasets for testing
+├── notebooks/                   # Jupyter notebooks for KPI computation
+│   ├── compute_kpis.ipynb       # Notebook showing how KPIs were computed
+│   └── exploratory_analysis.ipynb # Notebook for exploratory data analysis
 ├── README.md                    # Project documentation
 └── requirements.txt             # Python dependencies for the project
 ```
