@@ -22,6 +22,7 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 ### **3️⃣ Load and KPI Computation Job**
 - Computes **business metrics** from **S3 data** and stores in **Redshift Presentation**
 - Script location: `glue_scripts/loading.py`
+
 ## 🏗️ AWS Step Functions Workflow
 
 <p align="center">
@@ -37,8 +38,28 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 5. **Send Email**
 6. **End Execution**
 
+## 📁 Project Structure
 
+The following is the directory structure of the project:
 
+```
+Rental_Marketplace/
+├── glue_scripts/                # Python scripts for AWS Glue jobs
+│   ├── ingestion.py             # Script for extracting data from RDS to S3
+│   ├── transform.py             # Script for transforming data and loading into Redshift
+│   ├── loading.py               # Script for computing KPIs and loading into Redshift
+│   └── step_functions.py        # Script for orchestrating the workflow with Step Functions
+├── images/                      # Diagrams and visual assets
+│   ├── architecture_diagram.jpg # Architecture diagram of the pipeline
+│   ├── Glue.png                 # AWS Glue workflow diagram
+│   ├── Init_db_erd.jpg          # Database schema ERD
+│   ├── Monthly-kpis.png         # Monthly KPI visualization
+│   └── weekly-kpis.png          # Weekly KPI visualization
+├── data/                        # Sample datasets for testing
+├── sql_queries/                 # SQL scripts for KPI computation
+├── README.md                    # Project documentation
+└── requirements.txt             # Python dependencies for the project
+```
 
 ## 📂 Datasets & Schema
 
@@ -101,7 +122,6 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 | currency     | STRING  | Payment currency        |
 | booking_status | STRING | Booking status         |
 
-
 ## 📈 KPIs Created
 
 ### Rental Performance Metrics
@@ -126,7 +146,6 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 
 - **Repeat Customer Rate**:  
   Measure how many users book more than once within a rolling 30-day period.
-
 
 ## 📊 Monthly KPI Analysis
 
