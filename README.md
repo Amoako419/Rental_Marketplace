@@ -19,6 +19,10 @@ This project focuses on implementing an end-to-end data pipeline for a rental ma
 ### **3️⃣ KPI Computation Job**
 - Computes **business metrics** from **S3 data** and stores in **Redshift Presentation**
 
+<p align="center">
+    <img src="images/Glue.png" alt="The architecture diagram" width="100%" />
+</p>
+
 ## 🏗️ AWS Step Functions Workflow
 1. **Start Execution**
 2. **Run Extract & Load Job**
